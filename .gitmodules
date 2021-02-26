@@ -1,0 +1,6 @@
+[submodule "lib/Audio"]
+	path = lib/Audio
+	url = https://github.com/PaulStoffregen/Audio.git
+[submodule "lib/uClock"]
+	path = lib/uClock
+	url = https://github.com/midilab/uClock.git
