@@ -4,3 +4,6 @@
 [submodule "lib/uClock"]
 	path = lib/uClock
 	url = https://github.com/midilab/uClock.git
+[submodule "lib/Adafruit_Seesaw"]
+	path = lib/Adafruit_Seesaw
+	url = https://github.com/adafruit/Adafruit_Seesaw.git
