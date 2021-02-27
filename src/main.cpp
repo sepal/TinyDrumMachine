@@ -5,9 +5,11 @@
 #include <SPI.h>
 #include <SD.h>
 #include <SerialFlash.h>
+#include "Adafruit_NeoTrellis.h"
 #include "AudioSampleBd.h"
 #include "AudioSampleSd.h"
 #include "AudioSampleCh.h"
+#include "AudioSampleOh.h"
 
 #define STEP_MAX_SIZE      16
 
@@ -35,65 +37,67 @@ AudioConnection          patchCord6(mixerMain, 0, out, 1);
 AudioControlSGTL5000     audioShield;     //xy=478,1043
 // GUItool: end automatically generated code
 
+#define TRELLIS_X 4
+#define TRELLIS_Y 8
+const uint8_t TRELLIS_NUM_PIXELS = TRELLIS_Y * TRELLIS_X;
+//create a matrix of trellis panels
+Adafruit_NeoTrellis trellis_array[TRELLIS_X/4][TRELLIS_Y/4] = {
+  
+  { Adafruit_NeoTrellis(0x2F), Adafruit_NeoTrellis(0x2E) }
+  
+};
+
+
+Adafruit_MultiTrellis trellis((Adafruit_NeoTrellis *)trellis_array, TRELLIS_Y/4, TRELLIS_X/4);
+
 void ClockOut16PPQN(uint32_t * tick) {
   _step = *tick % _step_length;
-  Serial.println(_step);
+}
 
-  switch(_step) {
-    case 0:
-      playChn2.play(AudioSampleBd);
-      playChn1.play(AudioSampleCh);
-    break;
-    case 1:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 2:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 3:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 4:
-      playChn1.play(AudioSampleCh);
-      playChn3.play(AudioSampleSd);
-    break;
-    case 5:
-      playChn2.play(AudioSampleBd);
-    break;
-    case 6:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 7:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 8:
-      playChn2.play(AudioSampleBd);
-      playChn1.play(AudioSampleCh);
-    break;
-    case 9:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 10:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 11:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 12:
-      playChn1.play(AudioSampleCh);
-      playChn3.play(AudioSampleSd);
-    break;
-    case 13:
-      playChn1.play(AudioSampleCh);
-    break;
-    case 14:
-      playChn2.play(AudioSampleCh);
-    break;
-    case 15:
-      playChn1.play(AudioSampleCh);
-      playChn3.play(AudioSampleSd);
-    break;
+// Input a value 0 to 255 to get a color value.
+// The colors are a transition r - g - b - back to r.
+uint32_t Wheel(byte WheelPos) {
+  if(WheelPos < 85) {
+   return seesaw_NeoPixel::Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  } else if(WheelPos < 170) {
+   WheelPos -= 85;
+   return seesaw_NeoPixel::Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else {
+   WheelPos -= 170;
+   return seesaw_NeoPixel::Color(0, WheelPos * 3, 255 - WheelPos * 3);
   }
+  return 0;
+}
+
+TrellisCallback blink(keyEvent evt){
+  Serial.println(evt.bit.NUM);
+  // Check is the pad pressed?
+  if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
+    trellis.setPixelColor(evt.bit.NUM, Wheel(map(evt.bit.NUM, 0, TRELLIS_NUM_PIXELS, 0, 255))); //on rising
+
+    switch (evt.bit.NUM) {
+      case 12:
+        playChn1.play(AudioSampleBd);
+      break;
+      case 8:
+        playChn2.play(AudioSampleSd);
+      break;
+      case 4:
+        playChn3.play(AudioSampleCh);
+      break;
+      case 0:
+        playChn3.play(AudioSampleOh);
+      break;
+    }
+  } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
+  // or is the pad released?
+    trellis.setPixelColor(evt.bit.NUM, 0); //off falling
+  }
+
+  // Turn on/off the neopixels!
+  trellis.show();
+
+  return 0;
 }
 
 void setup() {
@@ -112,9 +116,18 @@ void setup() {
   uClock.setClock16PPQNOutput(ClockOut16PPQN);
   uClock.setTempo(90);
 
-  uClock.start();
+  //uClock.start();
+
+  trellis.begin();
+
+  for(int i=0; i<TRELLIS_NUM_PIXELS; i++){
+    trellis.activateKey(i, SEESAW_KEYPAD_EDGE_RISING);
+    trellis.activateKey(i, SEESAW_KEYPAD_EDGE_FALLING);
+    trellis.registerCallback(i, blink);
+  }
+
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  trellis.read();
 }

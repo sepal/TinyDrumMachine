@@ -1,3 +1,3 @@
 // Audio data converted from WAV file by wav2sketch
 
-extern const unsigned int AudioSampleCh[4801];
+extern const unsigned int AudioSampleCh[8769];
