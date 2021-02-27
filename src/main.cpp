@@ -10,16 +10,15 @@
 #include "AudioSampleSd.h"
 #include "AudioSampleCh.h"
 #include "AudioSampleOh.h"
-
-#define STEP_MAX_SIZE      16
-
-uint16_t _step_length = STEP_MAX_SIZE;
+#include "Sequencer.h"
 
 // Make sure all above sequencer data are modified atomicly only
 // eg. ATOMIC(_sequencer[0].accent = true); ATOMIC(_step_length = 7);
 uint8_t _tmpSREG;
 #define ATOMIC(X) _tmpSREG = SREG; cli(); X; SREG = _tmpSREG;
-uint16_t _step = 0;
+
+Sequencer sequencer;
+
 
 // GUItool: begin automatically generated code
 AudioPlayMemory          playChn2;       //xy=319,633
@@ -51,7 +50,7 @@ Adafruit_NeoTrellis trellis_array[TRELLIS_X/4][TRELLIS_Y/4] = {
 Adafruit_MultiTrellis trellis((Adafruit_NeoTrellis *)trellis_array, TRELLIS_Y/4, TRELLIS_X/4);
 
 void ClockOut16PPQN(uint32_t * tick) {
-  _step = *tick % _step_length;
+  sequencer.step(tick);
 }
 
 // Input a value 0 to 255 to get a color value.
@@ -70,33 +69,41 @@ uint32_t Wheel(byte WheelPos) {
 }
 
 TrellisCallback blink(keyEvent evt){
-  Serial.println(evt.bit.NUM);
-  // Check is the pad pressed?
-  if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
-    trellis.setPixelColor(evt.bit.NUM, Wheel(map(evt.bit.NUM, 0, TRELLIS_NUM_PIXELS, 0, 255))); //on rising
+  // Serial.println(evt.bit.NUM);
+  // // Check is the pad pressed?
+  // if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
+  //   trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(255, 255, 255)); //on rising
+  // } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
+  // // or is the pad released?
+  //   trellis.setPixelColor(evt.bit.NUM, 0); //off falling
+  // }
 
-    switch (evt.bit.NUM) {
-      case 12:
-        playChn1.play(AudioSampleBd);
-      break;
-      case 8:
-        playChn2.play(AudioSampleSd);
-      break;
-      case 4:
-        playChn3.play(AudioSampleCh);
-      break;
-      case 0:
-        playChn3.play(AudioSampleOh);
-      break;
-    }
-  } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
-  // or is the pad released?
-    trellis.setPixelColor(evt.bit.NUM, 0); //off falling
+  // // Turn on/off the neopixels!
+  // trellis.show();
+
+  return 0;
+}
+
+SequencerCallback seqEvent(uint8_t note) {
+  Serial.println(note);
+  return 0;
+}
+
+uint16_t get_pixel_num(uint16_t x, uint16_t y) {
+  return (x > 3 ? 1 : 0) * 12 + x + (y * 4);
+}
+
+uint8_t note_to_pixel_num(uint8_t note) {
+  switch (note) {
+    case 48:
+      return 3;
+    case 50:
+      return 2;
+    case 52:
+      return 1;
+    case 53:
+      return 0;
   }
-
-  // Turn on/off the neopixels!
-  trellis.show();
-
   return 0;
 }
 
@@ -116,7 +123,7 @@ void setup() {
   uClock.setClock16PPQNOutput(ClockOut16PPQN);
   uClock.setTempo(90);
 
-  //uClock.start();
+  uClock.start();
 
   trellis.begin();
 
@@ -126,8 +133,39 @@ void setup() {
     trellis.registerCallback(i, blink);
   }
 
+  for (uint8_t i=0; i<sequencer.step_len; i++) {
+    if (sequencer._sequence[i] != 0) {
+      uint8_t y = note_to_pixel_num(sequencer._sequence[i]);
+      uint16_t n = get_pixel_num(i, y);
+      
+      trellis.setPixelColor(n, seesaw_NeoPixel::Color(128,0,128));
+    }
+  }
+
+  trellis.show();
+
+  sequencer.registerCallback(seqEvent);
 }
 
 void loop() {
   trellis.read();
+  for (int i=0; i<MAX_CHANNELS; i++) {
+        if (sequencer._stack[i] != 0) {
+               switch (sequencer._stack[i]) {
+              case 48:
+                playChn1.play(AudioSampleBd);
+              break;
+              case 50:
+                playChn2.play(AudioSampleSd);
+              break;
+              case 52:
+                playChn3.play(AudioSampleCh);
+              break;
+              case 53:
+                playChn3.play(AudioSampleOh);
+              break;
+            }
+            sequencer._stack[i] = 0;
+        }
+    }
 }
