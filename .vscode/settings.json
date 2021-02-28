@@ -1,0 +1,9 @@
+{
+    "files.associations": {
+        "audiosamplebd.h": "c",
+        "audiosampleoh.h": "c",
+        "audiosamplech.h": "c",
+        "audiosamplesd.h": "c",
+        "arduino.h": "c"
+    }
+}
