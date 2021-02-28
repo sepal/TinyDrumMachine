@@ -116,14 +116,14 @@ TrellisCallback blink(keyEvent evt){
   // Check is the pad pressed?
   if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
     trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(200, 75, 75));
-    if (sequencer._sequence[step] == 0) {
-      sequencer.setStep(step, pitch);
+    if (sequencer.getStep(step, pitch) == NULL) {
+      sequencer.setStep(step, pitch, 255);
     } else {
-      sequencer.setStep(step, 0);
+      sequencer.removeStep(step, pitch);
     }
 
   } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
-    if (sequencer._sequence[step] == 0) {
+    if (sequencer.getStep(step, pitch) == NULL) {
       trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(0, 0, 0)); 
     } else {
       trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(200, 50, 50    )); 
@@ -162,14 +162,16 @@ void setup() {
     trellis.registerCallback(i, blink);
   }
 
-  for (uint8_t i=0; i<sequencer.step_len; i++) {
-    if (sequencer._sequence[i] != 0) {
-      uint8_t y = note_to_pixel_num(sequencer._sequence[i]);
-      uint16_t n = get_pixel_num(i, y);
-      
-      trellis.setPixelColor(n, seesaw_NeoPixel::Color(128,0,128));
-    }
-  }
+  // for (uint8_t step=0; step<sequencer.step_len; step++) {
+  //   for (uint8_t pitch=0; pitch<256; pitch++){
+  //     if (sequencer._sequence[step][pitch] != 0) {
+  //       uint8_t y = note_to_pixel_num(sequencer._sequence[step][pitch]);
+  //       uint16_t n = get_pixel_num(step, y);
+        
+  //       trellis.setPixelColor(n, seesaw_NeoPixel::Color(128,0,128));
+  //     }
+  //   }
+  // }
 
   trellis.show();
 
@@ -178,10 +180,11 @@ void setup() {
 
 void loop() {
   trellis.read();
-  for (int i=0; i<MAX_CHANNELS; i++) {
-        if (sequencer._stack[i] != 0) {
-          sampler.play(sequencer._stack[i]);
-          sequencer._stack[i] = 0;
+  for (uint8_t i=0; i<MAX_VOICES; i++) {
+        if (sequencer._stack[i] != NULL) {
+          uint8_t pitch = sequencer._stack[i]->pitch;
+          sampler.play(pitch);
+          sequencer._stack[i] = NULL;
         }
     }
 }

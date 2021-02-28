@@ -4,6 +4,7 @@
         "audiosampleoh.h": "c",
         "audiosamplech.h": "c",
         "audiosamplesd.h": "c",
-        "arduino.h": "c"
+        "arduino.h": "c",
+        "voice.h": "c"
     }
 }
