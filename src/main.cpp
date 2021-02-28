@@ -68,25 +68,22 @@ uint32_t Wheel(byte WheelPos) {
   return 0;
 }
 
-TrellisCallback blink(keyEvent evt){
-  // Serial.println(evt.bit.NUM);
-  // // Check is the pad pressed?
-  // if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
-  //   trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(255, 255, 255)); //on rising
-  // } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
-  // // or is the pad released?
-  //   trellis.setPixelColor(evt.bit.NUM, 0); //off falling
-  // }
-
-  // // Turn on/off the neopixels!
-  // trellis.show();
-
-  return 0;
+uint16_t trellis_get_x(uint16_t num) {
+  if (num < 16) {
+    return num % 4;
+  }
+  else {
+    return (num % 4) + 4;
+  }
 }
 
-SequencerCallback seqEvent(uint8_t note) {
-  Serial.println(note);
-  return 0;
+uint16_t trellis_get_y(uint16_t num) {
+  if (num < 16) {
+    return num >> 2;
+  }
+  else {
+    return (num - 16) >> 2;
+  }
 }
 
 uint16_t get_pixel_num(uint16_t x, uint16_t y) {
@@ -104,6 +101,51 @@ uint8_t note_to_pixel_num(uint8_t note) {
     case 53:
       return 0;
   }
+  return 0;
+}
+
+uint8_t pixel_to_note(uint8_t x) {
+  switch (x) {
+    case 3:
+      return 48;
+    case 2:
+      return 50;
+    case 1:
+      return 52;
+    case 0:
+      return 53;
+  }
+  return 0;
+}
+
+TrellisCallback blink(keyEvent evt){
+  uint8_t step = trellis_get_x(evt.bit.NUM);
+  uint8_t pitch = pixel_to_note(trellis_get_y(evt.bit.NUM));
+  // Check is the pad pressed?
+  if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_RISING) {
+    trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(200, 75, 75));
+    if (sequencer._sequence[step] == 0) {
+      sequencer.setStep(step, pitch);
+    } else {
+      sequencer.setStep(step, 0);
+    }
+
+  } else if (evt.bit.EDGE == SEESAW_KEYPAD_EDGE_FALLING) {
+    if (sequencer._sequence[step] == 0) {
+      trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(0, 0, 0)); 
+    } else {
+      trellis.setPixelColor(evt.bit.NUM, seesaw_NeoPixel::Color(200, 50, 50    )); 
+    }
+  }
+
+  // Turn on/off the neopixels!
+   trellis.show();
+
+  return 0;
+}
+
+SequencerCallback seqEvent(uint8_t note) {
+  Serial.println(note);
   return 0;
 }
 

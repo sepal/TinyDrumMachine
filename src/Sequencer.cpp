@@ -2,14 +2,14 @@
 #include "Sequencer.h"
 
 Sequencer::Sequencer() {
-    this->_sequence[0] = 48;
+    this->_sequence[0] = 0;
     this->_sequence[1] = 0;
-    this->_sequence[2] = 50;
+    this->_sequence[2] = 0;
     this->_sequence[3] = 0;
-    this->_sequence[4] = 48;
+    this->_sequence[4] = 0;
     this->_sequence[5] = 0;
     this->_sequence[6] = 0;
-    this->_sequence[7] = 50;
+    this->_sequence[7] = 0;
 
 
     for (int i=0; i<MAX_CHANNELS; i++) {
