@@ -7,3 +7,6 @@
 [submodule "lib/Adafruit_Seesaw"]
 	path = lib/Adafruit_Seesaw
 	url = https://github.com/adafruit/Adafruit_Seesaw.git
+[submodule "lib/SerialFlash"]
+	path = lib/SerialFlash
+	url = https://github.com/PaulStoffregen/SerialFlash.git

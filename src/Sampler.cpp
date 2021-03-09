@@ -13,7 +13,7 @@ Sampler::Sampler() {
     this->out = new AudioMixer4();
 
     for (int i=0; i < MAX_SAMPLES; i++) {
-        this->voices[i] = new AudioPlayMemory();
+        this->voices[i] = new AudioPlaySerialflashRaw();
         this->patchCords[i] = new AudioConnection(*this->voices[i], 0, *this->out, i);
         this->out->gain(i, 0.4);
     }
