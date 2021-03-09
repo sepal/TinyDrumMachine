@@ -5,6 +5,9 @@
         "audiosamplech.h": "c",
         "audiosamplesd.h": "c",
         "arduino.h": "c",
-        "voice.h": "c"
+        "voice.h": "c",
+        "adafruit_seesaw.h": "c",
+        "seesaw_neopixel.h": "c",
+        "adafruit_neotrellis.h": "c"
     }
 }
