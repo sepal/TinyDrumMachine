@@ -19,26 +19,16 @@ Sampler::Sampler() {
     }
 }
 
-void Sampler::handleOnEvent(Note* note)
-{
-    this->play(note->pitch);
-}
-
-void Sampler::handleOffEvent(Note* note)
-{
-    this->stop(note->pitch);
-}
-
-void Sampler::play(uint8_t pitch) {
-    uint8_t i = this->sample_notes[pitch];
+void Sampler::noteOn(Note* note) {
+    uint8_t i = this->sample_notes[note->pitch];
     this->voices[i]->play(this->samples[i]);
 }
 
-void Sampler::stop(uint8_t pitch) {
-    uint8_t i = this->sample_notes[pitch];
+void Sampler::noteOff(Note* note) {
+    uint8_t i = this->sample_notes[note->pitch];
     this->voices[i]->stop();
 }
 
-AudioMixer4* Sampler::getOutput() {
+AudioStream* Sampler::getOutput() {
     return this->out;
 }

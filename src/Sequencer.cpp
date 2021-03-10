@@ -4,11 +4,7 @@
 Sequencer::Sequencer()
 {
     this->_step = 0;
-
-    for (uint8_t i=0; i < MAX_EVENT_HANDLERS; i++)
-    {
-        this->eventHandlers[i] = NULL;
-    }
+    this->instrument = NULL;
 }
 
 void Sequencer::setStep(uint8_t step, uint8_t pitch, uint8_t velocity)
@@ -57,35 +53,23 @@ void Sequencer::update()
     {
         if (this->_stack[i] != NULL)
         {
-            for (uint8_t j=0; j < MAX_EVENT_HANDLERS; j++)
+        
+            if (this->instrument != NULL)
             {
-                if (this->eventHandlers[j] != NULL)
-                {
-                    this->eventHandlers[j]->handleOnEvent(this->_stack[i]);
-                }
+                this->instrument->noteOn(this->_stack[i]);
             }
+            
             this->_stack[i] = NULL;
         }
     }
 }
 
-int8_t Sequencer::registerCallback(SequencerEventHandler *handler)
+void Sequencer::registerInstrument(Instrument* instrument)
 {
-    for (uint8_t i=0; i < MAX_EVENT_HANDLERS; i++)
-    {
-        if (this->eventHandlers[i] == NULL)
-        {
-            this->eventHandlers[i] = handler;
-            return i;
-        }
-    }
-    return -1;
+    this->instrument = instrument;
 }
 
-void Sequencer::unregisterCallback(uint8_t i)
+void Sequencer::unregisterInstrument()
 {
-    if (i <= MAX_EVENT_HANDLERS)
-    {
-        this->eventHandlers[i] = NULL;
-    }
+    this->instrument = NULL;
 }

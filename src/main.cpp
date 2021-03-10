@@ -28,12 +28,6 @@ void ClockOut16PPQN(uint32_t *tick)
   sequencer.step(tick);
 }
 
-SequencerCallback seqEvent(uint8_t note)
-{
-  Serial.println(note);
-  return 0;
-}
-
 void setup()
 {
   SPI.setSCK(14);  // Audio shield has SCK on pin 14
@@ -62,7 +56,7 @@ void setup()
 
   grid.registerHandler(&seqInput);
 
-  sequencer.registerCallback(&sampler);
+  sequencer.registerInstrument(&sampler);
   Serial.println("ready");
 }
 
