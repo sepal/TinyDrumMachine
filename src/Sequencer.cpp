@@ -5,23 +5,10 @@ Sequencer::Sequencer()
 {
     this->_step = 0;
 
-    for (uint8_t i; i < MAX_EVENT_HANDLERS; i++)
+    for (uint8_t i=0; i < MAX_EVENT_HANDLERS; i++)
     {
         this->eventHandlers[i] = NULL;
     }
-
-    // for (uint8_t i = 0; i<MAX_VOICES; i++) {
-    //     this->_stack[i] = NULL;
-    // }
-
-    // for (uint8_t step=0; step<this->step_len; step++) {
-    //     for(uint8_t pitch=0; pitch<256; pitch++) {
-    //         Serial.print(step);
-    //         Serial.print("-");
-    //         Serial.println(pitch);
-    //         this->_sequence[step][pitch] = NULL;
-    //     }
-    // }
 }
 
 void Sequencer::setStep(uint8_t step, uint8_t pitch, uint8_t velocity)
