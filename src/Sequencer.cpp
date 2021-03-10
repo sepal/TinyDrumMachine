@@ -72,7 +72,6 @@ void Sequencer::update()
         {
             for (uint8_t j=0; j < MAX_EVENT_HANDLERS; j++)
             {
-            Serial.println(j);
                 if (this->eventHandlers[j] != NULL)
                 {
                     this->eventHandlers[j]->handleOnEvent(this->_stack[i]);
@@ -89,7 +88,6 @@ int8_t Sequencer::registerCallback(SequencerEventHandler *handler)
     {
         if (this->eventHandlers[i] == NULL)
         {
-            Serial.println(i);
             this->eventHandlers[i] = handler;
             return i;
         }
