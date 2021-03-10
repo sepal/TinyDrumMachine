@@ -2,17 +2,14 @@
 #define _SEQUENCER_H_
 
 #include <Arduino.h>
+#include "Note.h"
+#include "SequencerEventHandler.h"
 
 #define PATTERN_LEN 8
 #define MAX_VOICES 4
+#define MAX_EVENT_HANDLERS 10
 
 typedef void (*SequencerCallback)(uint8_t note);
-
-struct Note {
-    uint8_t pitch;
-    uint8_t velocity = 0;
-    
-};
 
 class Sequencer
 {
@@ -24,7 +21,8 @@ public:
 
     void step(uint32_t * tick);
     void update();
-    void registerCallback(SequencerCallback (*cb)(uint8_t));
+    int8_t registerCallback(SequencerEventHandler*);
+    void unregisterCallback(uint8_t i);
 // private:
     const uint8_t step_len = PATTERN_LEN;
     Note *_sequence[PATTERN_LEN][256];
@@ -32,7 +30,7 @@ public:
 
     Note *_stack[MAX_VOICES];
 
-    SequencerCallback (*cb)(uint8_t);
+    SequencerEventHandler* eventHandlers[MAX_EVENT_HANDLERS];
 };
 
 #endif

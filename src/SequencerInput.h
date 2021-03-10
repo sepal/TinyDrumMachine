@@ -40,7 +40,6 @@ public:
             }
             else
             {
-                Serial.println(pitch % 12);
                 grid->setColor(event->x, event->y, map(pitch % 12, 0, 12, 0, 255));
             }
         }

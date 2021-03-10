@@ -67,27 +67,16 @@ void setup()
   uClock.setTempo(90);
 
   uClock.start();
-  Serial.println("grid.begin");
   grid.begin();
 
-  Serial.println("grid.registerhandler");
   grid.registerHandler(&seqInput);
 
-  Serial.println("sequencer.registerCallback");
-  sequencer.registerCallback(seqEvent);
+  sequencer.registerCallback(&sampler);
   Serial.println("ready");
 }
 
 void loop()
 {
   grid.read();
-  for (uint8_t i = 0; i < MAX_VOICES; i++)
-  {
-    if (sequencer._stack[i] != NULL)
-    {
-      uint8_t pitch = sequencer._stack[i]->pitch;
-      sampler.play(pitch);
-      sequencer._stack[i] = NULL;
-    }
-  }
+  sequencer.update();
 }

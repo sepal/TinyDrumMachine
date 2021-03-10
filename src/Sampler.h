@@ -3,16 +3,21 @@
 
 #include <Arduino.h>
 #include <Audio.h>
-
+#include "Note.h"
+#include "SequencerEventHandler.h"
 
 #define MAX_SAMPLES 4
 
-class Sampler {
+class Sampler: public SequencerEventHandler  {
 public:
     Sampler();
 
     void play(uint8_t pitch);
+    void stop(uint8_t pitch);
     AudioMixer4* getOutput();
+
+    void handleOnEvent(Note* note);
+    void handleOffEvent(Note* note);
 
     AudioPlaySerialflashRaw* voices[MAX_SAMPLES];
     AudioConnection* patchCords[MAX_SAMPLES];
