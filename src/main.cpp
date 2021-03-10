@@ -11,15 +11,6 @@
 #include "Grid.h"
 #include "SequencerInput.h"
 
-// Make sure all above sequencer data are modified atomicly only
-// eg. ATOMIC(_sequencer[0].accent = true); ATOMIC(_step_length = 7);
-uint8_t _tmpSREG;
-#define ATOMIC(X)  \
-  _tmpSREG = SREG; \
-  cli();           \
-  X;               \
-  SREG = _tmpSREG;
-
 #define FLASH_CHIP_SELECT  6
 
 Sequencer sequencer;
