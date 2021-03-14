@@ -26,7 +26,7 @@ AudioConnection patchCord6(*sampler.getOutput(), 0, out, 1);
 AudioControlSGTL5000 audioShield;
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
-SequencerInput seqInput(&sequencer, &grid);
+SequencerInput seqInput(&sequencer, &grid, &display);
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -41,6 +41,7 @@ void setup()
   SPI.setMOSI(7);
 
   fiveWaySwitch.begin();
+  fiveWaySwitch.registerEventHandler(&seqInput);
 
   Serial.begin(9600);
   AudioMemory(10);
@@ -79,4 +80,5 @@ void loop()
 {
   grid.read();
   sequencer.update();
+  fiveWaySwitch.update();
 }

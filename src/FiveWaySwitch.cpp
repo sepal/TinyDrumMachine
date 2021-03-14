@@ -43,3 +43,13 @@ void FiveWaySwitch::update()
         }
     }
 }
+
+void FiveWaySwitch::registerEventHandler(FiveWaySwitchEventHandler *handler)
+{
+    this->handler = handler;
+}
+
+void FiveWaySwitch::unregisterEventHandler()
+{
+    this->handler = NULL;
+}

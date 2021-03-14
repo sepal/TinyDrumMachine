@@ -1,9 +1,10 @@
 #include "SequencerInput.h"
 
-SequencerInput::SequencerInput(Sequencer *sequencer, Grid *grid)
+SequencerInput::SequencerInput(Sequencer *sequencer, Grid *grid, DisplaySSD1306_128x64_I2C *display)
 {
     this->sequencer = sequencer;
     this->grid = grid;
+    this->display = display;
 }
 
 void SequencerInput::handleGridEvent(GridEvent *event)
@@ -38,6 +39,17 @@ void SequencerInput::handleGridEvent(GridEvent *event)
 
     // // Turn on/off the neopixels!
     grid->show();
+}
+
+void SequencerInput::buttonDown(FiveWaySwitchButton button)
+{
+    Serial.print(button);
+    Serial.println(" down");
+}
+
+void SequencerInput::buttonUp(FiveWaySwitchButton button)
+{
+
 }
 
 uint8_t SequencerInput::note_to_pixel_num(uint8_t note)
