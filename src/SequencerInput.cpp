@@ -7,10 +7,31 @@ SequencerInput::SequencerInput(Sequencer *sequencer, Grid *grid, DisplaySSD1306_
     this->display = display;
 }
 
+void SequencerInput::updateGrid()
+{
+    for (int y = 0; y < GRID_X; y++)
+    {
+        uint8_t pitch = this->pixel_to_note(y);
+        Serial.println(pitch);
+        for (int x = 0; x < GRID_Y; x++)
+        {
+            if (this->sequencer->getStep(this->step_position + x, pitch) == NULL)
+            {
+                grid->setPixelColor(x, y, seesaw_NeoPixel::Color(0, 0, 0));
+            }
+            else
+            {
+                grid->setColor(x, y, map(pitch % 12, 0, 12, 0, 255));
+            }
+        }
+    }
+    grid->show();
+}
+
 void SequencerInput::handleGridEvent(GridEvent *event)
 {
     uint8_t pitch = pixel_to_note(event->y);
-    uint8_t step = event->x;
+    uint8_t step = event->x + this->step_position;
 
     // Check is the pad pressed?
     if (event->edge == SEESAW_KEYPAD_EDGE_RISING)
@@ -43,13 +64,27 @@ void SequencerInput::handleGridEvent(GridEvent *event)
 
 void SequencerInput::buttonDown(FiveWaySwitchButton button)
 {
-    Serial.print(button);
-    Serial.println(" down");
+    if (button == FiveWaySwitchButton::JOYSTICK_DIR_LEFT && this->step_position > 0)
+    {
+        this->step_position--;
+    }
+    else if (button == FiveWaySwitchButton::JOYSTICK_DIR_RIGHT && this->step_position < PATTERN_LEN / 2)
+    {
+        this->step_position++;
+    }
+    Serial.println(this->step_position + 1);
+    String text;
+    for (int i = 0; i < 8; i++)
+    {
+        text.append((this->step_position + i) % 8 + 1);
+        text.append(" ");
+    }
+    display->printFixed(0, 20, text.c_str());
+    this->updateGrid();
 }
 
 void SequencerInput::buttonUp(FiveWaySwitchButton button)
 {
-
 }
 
 uint8_t SequencerInput::note_to_pixel_num(uint8_t note)

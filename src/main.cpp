@@ -72,7 +72,7 @@ void setup()
   display.begin();
   display.setFixedFont(ssd1306xled_font8x16);
   display.clear();
-  display.printFixed(0, 8, "SEQ");
+  display.printFixed(53, 0, "SEQ");
   Serial.println("ready");
 }
 

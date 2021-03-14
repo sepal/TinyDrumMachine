@@ -5,7 +5,7 @@
 #include "Note.h"
 #include "Instrument.h"
 
-#define PATTERN_LEN 8
+#define PATTERN_LEN 16
 #define MAX_VOICES 4
 #define SEQUENCER_MAX_INSTRUMENTS 10
 
