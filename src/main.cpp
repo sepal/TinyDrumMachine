@@ -12,6 +12,8 @@
 #include "Grid.h"
 #include "SequencerInput.h"
 #include "FiveWaySwitch.h"
+#include "Encoder.h"
+
 
 #define FLASH_CHIP_SELECT  6
 
@@ -26,7 +28,10 @@ AudioConnection patchCord6(*sampler.getOutput(), 0, out, 1);
 AudioControlSGTL5000 audioShield;
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
+Encoder encoder(20, 21);
 SequencerInput seqInput(&sequencer, &grid, &display);
+
+
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -75,7 +80,6 @@ void setup()
   display.printFixed(53, 0, "SEQ");
   Serial.println("ready");
 }
-
 void loop()
 {
   grid.read();
