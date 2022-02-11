@@ -18,7 +18,7 @@
 
 #include "Control.h"
 #include "SequenceControls.h"
-#include "RobotoMono.h"
+#include "Stealth57.h"
 
 #define FLASH_CHIP_SELECT  6
 
@@ -40,7 +40,7 @@ Control* currentControl = 0;
 
 Control* controls[2] = {
   new SequenceControlBPM(4, 21, &display),
-  new PositionControl(20, 60, &display, &seqInput),
+  new PositionControl(128-4-40, 21, &display, &seqInput),
 };
 
 
@@ -97,7 +97,7 @@ void setup()
   sequencer.registerInstrument(&sampler);
 
   display.begin();
-  display.setFixedFont(RobotoMono13x17);
+  display.setFixedFont(stealth5710x8);
   display.clear();
   display.printFixed(53, 0, "SEQ");
   Serial.println("ready");

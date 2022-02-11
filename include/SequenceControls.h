@@ -10,8 +10,8 @@ class SequenceControlBPM: public Control
 {
 public:
     SequenceControlBPM(int xPos, int yPos, DisplaySSD1327_128x128_I2C* display) : Control(xPos, yPos, display) {
-        this->w = 39;
-        this->h = 34;
+        this->w = 40;
+        this->h = 18;
     }
     
     void draw() {
@@ -21,8 +21,8 @@ public:
         snprintf(s, 4, "%f", tempo);
         Serial.println(s);
 
-        printFixed(0, 0, "BPM\n");
-        printFixed(0, 16, s);
+        printFixed(0, 0, "BPM");
+        printFixed(0, 10, s);
     }
 
     void onEncoderChange(int increments) {
@@ -37,16 +37,16 @@ class PositionControl: public Control
 public:
     PositionControl(int xPos, int yPos, DisplaySSD1327_128x128_I2C* display, SequencerInput* seqInput) : Control(xPos, yPos, display) {
         this->seqInput = seqInput;
-        this->w = 104;
-        this->h = 34;
+        this->w = 40;
+        this->h = 18;
     }
 
     void draw() {
         int step_pos = this->seqInput->getStepPosition();
-        char s[9];
-        snprintf(s, 9, "< %d-%02d >", step_pos + 1, step_pos + 8);
-        printFixed(0, 0, "Position");
-        printFixed(0, 16, s);
+        char s[5];
+        snprintf(s, 5, "%d-%02d", step_pos + 1, step_pos + 8);
+        printFixed(0, 0, "Pos");
+        printFixed(0, 10, s);
     }
 
     void onEncoderChange(int increments) {
