@@ -7,12 +7,16 @@
 #include <SerialFlash.h>
 #include <lcdgfx.h>
 #include "Adafruit_NeoTrellis.h"
+#define ENCODER_DO_NOT_USE_INTERRUPTS
+#include <Encoder.h>
+
 #include "Sequencer.h"
 #include "Sampler.h"
 #include "Grid.h"
 #include "SequencerInput.h"
 #include "FiveWaySwitch.h"
-#include "Encoder.h"
+
+#include "Control.h"
 #include "SequenceControls.h"
 #include "RobotoMono.h"
 
@@ -31,10 +35,26 @@ Grid grid;
 FiveWaySwitch fiveWaySwitch;
 Encoder encoder(20, 21);
 SequencerInput seqInput(&sequencer, &grid);
-SequenceControlBPM bpmControl(4, 21, &display);
+
+Control* currentControl = 0;
+
+Control* controls[2] = {
+  new SequenceControlBPM(4, 21, &display),
+  new PositionControl(20, 60, &display, &seqInput),
+};
 
 
 long int encoder_old_pos = -99;
+
+
+void selectNewControl(Control* newControl)
+{
+  if (currentControl)
+    currentControl->blur();
+
+  currentControl = newControl;
+  currentControl->select();
+}
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -49,7 +69,6 @@ void setup()
   SPI.setMOSI(7);
 
   fiveWaySwitch.begin();
-  fiveWaySwitch.registerEventHandler(&seqInput);
 
   Serial.begin(9600);
   AudioMemory(10);
@@ -83,9 +102,12 @@ void setup()
   display.printFixed(53, 0, "SEQ");
   Serial.println("ready");
 
-  bpmControl.select();
+  selectNewControl(controls[1]);
   encoder_old_pos = encoder.read();
 
+  for (int i=0; i<2; i++) {
+    controls[i]->draw();
+  }
 }
 
 
@@ -94,12 +116,14 @@ void loop()
   long encoder_pos = encoder.read();
 
   if (encoder_old_pos != encoder_pos) {
-    bpmControl.onEncoderChange(encoder_old_pos - encoder_pos);
+    controls[1]->onEncoderChange(encoder_old_pos - encoder_pos);
     encoder_old_pos = encoder_pos;
+    controls[1]->draw();
   }
 
   grid.read();
   sequencer.update();
   fiveWaySwitch.update();
-  bpmControl.draw();
+
+
 }

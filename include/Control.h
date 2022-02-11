@@ -6,9 +6,8 @@ public:
     Control(int xPos, int yPos, DisplaySSD1327_128x128_I2C* display) {
         this->xPos = xPos;
         this->yPos = yPos;
-        this->w = 39;
-        this->h = 34;
         this->display = display;
+        this->selected = false;
     }
 
     virtual void draw() = 0;
@@ -27,7 +26,7 @@ protected:
     {
         this->display->setColor(0xFF);
         if (selected) {
-            this->display->drawRect(xPos-1, yPos-2, xPos + w + 2, yPos + h + 2);
+           this->display->drawRect(xPos-1, yPos-2, xPos + w + 2, yPos + h + 2);
         }
         this->display->printFixed(xPos + x, yPos + y, text);
     }

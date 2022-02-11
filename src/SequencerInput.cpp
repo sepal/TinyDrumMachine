@@ -61,21 +61,21 @@ void SequencerInput::handleGridEvent(GridEvent *event)
     grid->show();
 }
 
-void SequencerInput::buttonDown(FiveWaySwitchButton button)
+void SequencerInput::moveBy(int offset)
 {
-    if (button == FiveWaySwitchButton::JOYSTICK_DIR_LEFT && this->step_position > 0)
+    if (this->step_position + 8 + offset > PATTERN_LEN)
     {
-        this->step_position--;
-    }
-    else if (button == FiveWaySwitchButton::JOYSTICK_DIR_RIGHT && this->step_position < PATTERN_LEN / 2)
-    {
-        this->step_position++;
+        this->step_position = PATTERN_LEN - 8 - 1;
+    } else if(this->step_position + offset < 0) {
+        this->step_position = 0;
+    } else {
+        this->step_position += offset;
     }
     this->updateGrid();
 }
 
-void SequencerInput::buttonUp(FiveWaySwitchButton button)
-{
+int SequencerInput::getStepPosition() {
+    return this->step_position;
 }
 
 uint8_t SequencerInput::note_to_pixel_num(uint8_t note)
