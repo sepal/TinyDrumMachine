@@ -10,7 +10,7 @@
 class SequencerInput : public GridEventHandler, public FiveWaySwitchEventHandler
 {
 public:
-    SequencerInput(Sequencer *sequencer, Grid *grid, DisplaySSD1306_128x64_I2C *display);
+    SequencerInput(Sequencer *sequencer, Grid *grid);
     void updateGrid();
     void handleGridEvent(GridEvent *event);
     void buttonDown(FiveWaySwitchButton button);
@@ -24,7 +24,6 @@ protected:
 
     Sequencer *sequencer;
     Grid *grid;
-    DisplaySSD1306_128x64_I2C *display;
 
     uint8_t step_position = 0;
 };

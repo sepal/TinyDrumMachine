@@ -1,10 +1,9 @@
 #include "SequencerInput.h"
 
-SequencerInput::SequencerInput(Sequencer *sequencer, Grid *grid, DisplaySSD1306_128x64_I2C *display)
+SequencerInput::SequencerInput(Sequencer *sequencer, Grid *grid)
 {
     this->sequencer = sequencer;
     this->grid = grid;
-    this->display = display;
 }
 
 void SequencerInput::updateGrid()
@@ -72,14 +71,6 @@ void SequencerInput::buttonDown(FiveWaySwitchButton button)
     {
         this->step_position++;
     }
-    Serial.println(this->step_position + 1);
-    String text;
-    for (int i = 0; i < 8; i++)
-    {
-        text.append((this->step_position + i) % 8 + 1);
-        text.append(" ");
-    }
-    display->printFixed(0, 20, text.c_str());
     this->updateGrid();
 }
 

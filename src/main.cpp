@@ -13,11 +13,12 @@
 #include "SequencerInput.h"
 #include "FiveWaySwitch.h"
 #include "Encoder.h"
-
+#include "SequenceControls.h"
+#include "RobotoMono.h"
 
 #define FLASH_CHIP_SELECT  6
 
-DisplaySSD1306_128x64_I2C display(-1);
+DisplaySSD1327_128x128_I2C display(-1);
 
 Sequencer sequencer;
 Sampler sampler;
@@ -29,9 +30,11 @@ AudioControlSGTL5000 audioShield;
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
 Encoder encoder(20, 21);
-SequencerInput seqInput(&sequencer, &grid, &display);
+SequencerInput seqInput(&sequencer, &grid);
+SequenceControlBPM bpmControl(4, 21, &display);
 
 
+long int encoder_old_pos = -99;
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -75,14 +78,28 @@ void setup()
   sequencer.registerInstrument(&sampler);
 
   display.begin();
-  display.setFixedFont(ssd1306xled_font8x16);
+  display.setFixedFont(RobotoMono13x17);
   display.clear();
   display.printFixed(53, 0, "SEQ");
   Serial.println("ready");
+
+  bpmControl.select();
+  encoder_old_pos = encoder.read();
+
 }
+
+
 void loop()
 {
+  long encoder_pos = encoder.read();
+
+  if (encoder_old_pos != encoder_pos) {
+    bpmControl.onEncoderChange(encoder_old_pos - encoder_pos);
+    encoder_old_pos = encoder_pos;
+  }
+
   grid.read();
   sequencer.update();
   fiveWaySwitch.update();
+  bpmControl.draw();
 }
