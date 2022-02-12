@@ -10,6 +10,7 @@
         "seesaw_neopixel.h": "c",
         "adafruit_neotrellis.h": "c",
         "sequencereventhandler.h": "c",
-        "*.tcc": "cpp"
+        "*.tcc": "cpp",
+        "map": "cpp"
     }
 }

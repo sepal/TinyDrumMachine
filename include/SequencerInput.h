@@ -3,7 +3,6 @@
 
 #include <Arduino.h>
 #include <lcdgfx.h>
-#include "FiveWaySwitch.h"
 #include "Grid.h"
 #include "Sequencer.h"
 

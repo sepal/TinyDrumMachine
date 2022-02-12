@@ -10,10 +10,10 @@
  */
 enum FiveWaySwitchButton
 {
-    JOYSTICK_DIR_DOWN = 0,
-    JOYSTICK_DIR_LEFT = 1,
-    JOYSTICK_DIR_UP = 2,
-    JOYSTICK_DIR_RIGHT = 3,
+    JOYSTICK_DIR_LEFT = 0,
+    JOYSTICK_DIR_UP = 1,
+    JOYSTICK_DIR_RIGHT = 2,
+    JOYSTICK_DIR_DOWN = 3,
     JOYSTICK_DIR_CENTER = 4,
 };
 

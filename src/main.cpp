@@ -10,17 +10,16 @@
 #define ENCODER_DO_NOT_USE_INTERRUPTS
 #include <Encoder.h>
 
+#include "FiveWaySwitch.h"
 #include "Sequencer.h"
 #include "Sampler.h"
 #include "Grid.h"
 #include "SequencerInput.h"
-#include "FiveWaySwitch.h"
-
-#include "Control.h"
-#include "SequenceControls.h"
 #include "Stealth57.h"
+#include "Menu.h"
+#include "Pages.h"
 
-#define FLASH_CHIP_SELECT  6
+#define FLASH_CHIP_SELECT 6
 
 DisplaySSD1327_128x128_I2C display(-1);
 
@@ -36,25 +35,10 @@ FiveWaySwitch fiveWaySwitch;
 Encoder encoder(20, 21);
 SequencerInput seqInput(&sequencer, &grid);
 
-Control* currentControl = 0;
-
-Control* controls[2] = {
-  new SequenceControlBPM(4, 21, &display),
-  new PositionControl(128-4-40, 21, &display, &seqInput),
+Page* pages[1] = {
+  new SequencerPage(&display, &seqInput),
 };
-
-
-long int encoder_old_pos = -99;
-
-
-void selectNewControl(Control* newControl)
-{
-  if (currentControl)
-    currentControl->blur();
-
-  currentControl = newControl;
-  currentControl->select();
-}
+Menu menu(&display, pages, 1);
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -68,16 +52,17 @@ void setup()
   // Audio shield has MOSI on pin 7
   SPI.setMOSI(7);
 
-  fiveWaySwitch.begin();
 
   Serial.begin(9600);
   AudioMemory(10);
 
   // Start SerialFlash
-  if (!SerialFlash.begin(FLASH_CHIP_SELECT)) {
-    while (1) {
+  if (!SerialFlash.begin(FLASH_CHIP_SELECT))
+  {
+    while (1)
+    {
       Serial.println(F("Cannot access SPI Flash chip"));
-      delay (1000);
+      delay(1000);
     }
   }
 
@@ -89,41 +74,30 @@ void setup()
   uClock.setTempo(90);
 
   uClock.start();
-  grid.begin();
+  display.begin();
+  display.setFixedFont(stealth5710x8);
 
+  grid.begin();
   grid.registerHandler(&seqInput);
   grid.show();
 
   sequencer.registerInstrument(&sampler);
 
-  display.begin();
-  display.setFixedFont(stealth5710x8);
-  display.clear();
-  display.printFixed(53, 0, "SEQ");
+
+  fiveWaySwitch.begin();
+  menu.begin();
   Serial.println("ready");
+  fiveWaySwitch.registerEventHandler(&menu);
 
-  selectNewControl(controls[1]);
-  encoder_old_pos = encoder.read();
+  menu.updatePageScreen();
 
-  for (int i=0; i<2; i++) {
-    controls[i]->draw();
-  }
 }
 
 
 void loop()
 {
-  long encoder_pos = encoder.read();
-
-  if (encoder_old_pos != encoder_pos) {
-    controls[1]->onEncoderChange(encoder_old_pos - encoder_pos);
-    encoder_old_pos = encoder_pos;
-    controls[1]->draw();
-  }
-
   grid.read();
   sequencer.update();
   fiveWaySwitch.update();
-
-
+  menu.update();
 }
