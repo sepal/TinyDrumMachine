@@ -4,7 +4,7 @@
 Sequencer::Sequencer()
 {
     this->_step = 0;
-    this->instrument = NULL;
+    this->engine = NULL;
 }
 
 void Sequencer::setStep(uint8_t step, uint8_t pitch, uint8_t velocity)
@@ -31,9 +31,9 @@ void Sequencer::step(uint32_t *tick)
 
     for (uint8_t pitch = 48; pitch < 54; pitch++)
     {
+
         if (this->_sequence[this->_step][pitch] != NULL)
         {
-
             for (uint8_t i = 0; i < MAX_VOICES; i++)
             {
                 if (this->_stack[i] == NULL)
@@ -53,10 +53,9 @@ void Sequencer::update()
     {
         if (this->_stack[i] != NULL)
         {
-        
-            if (this->instrument != NULL)
+            if (this->engine != NULL)
             {
-                this->instrument->noteOn(this->_stack[i]);
+                this->engine->noteOn(this->_stack[i]->pitch, this->_stack[i]->velocity);
             }
             
             this->_stack[i] = NULL;
@@ -64,12 +63,12 @@ void Sequencer::update()
     }
 }
 
-void Sequencer::registerInstrument(Instrument* instrument)
+void Sequencer::registerAudioEngine(AudioEngine* engine)
 {
-    this->instrument = instrument;
+    this->engine = engine;
 }
 
-void Sequencer::unregisterInstrument()
+void Sequencer::unregisterAudioEngine()
 {
-    this->instrument = NULL;
+    this->engine = NULL;
 }

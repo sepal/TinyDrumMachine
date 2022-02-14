@@ -19,8 +19,6 @@ public:
         float tempo = uClock.getTempo();
         char s[4];
         snprintf(s, 4, "%f", tempo);
-        Serial.println(s);
-
         printFixed(0, 0, "BPM");
         printFixed(0, 10, s);
     }

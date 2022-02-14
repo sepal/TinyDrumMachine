@@ -11,7 +11,6 @@ void SequencerInput::updateGrid()
     for (int y = 0; y < GRID_X; y++)
     {
         uint8_t pitch = this->pixel_to_note(y);
-        Serial.println(pitch);
         for (int x = 0; x < GRID_Y; x++)
         {
             if (this->sequencer->getStep(this->step_position + x, pitch) == NULL)
@@ -38,7 +37,7 @@ void SequencerInput::handleGridEvent(GridEvent *event)
         grid->setPixelColor(event->num, seesaw_NeoPixel::Color(200, 200, 200));
         if (this->sequencer->getStep(step, pitch) == NULL)
         {
-            this->sequencer->setStep(step, pitch, 255);
+            this->sequencer->setStep(step, pitch, 100);
         }
         else
         {

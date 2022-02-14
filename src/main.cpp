@@ -12,7 +12,7 @@
 
 #include "FiveWaySwitch.h"
 #include "Sequencer.h"
-#include "Sampler.h"
+#include "DrumkitSampleEngine.h"
 #include "Grid.h"
 #include "SequencerInput.h"
 #include "Stealth57.h"
@@ -22,14 +22,14 @@
 #define FLASH_CHIP_SELECT 6
 
 DisplaySSD1327_128x128_I2C display(-1);
+AudioControlSGTL5000 audioShield;
 
 Sequencer sequencer;
-Sampler sampler;
+DrumkitSampleEngine drumkitSampler;
 
 AudioOutputI2S out;
-AudioConnection patchCord5(*sampler.getOutput(), 0, out, 0);
-AudioConnection patchCord6(*sampler.getOutput(), 0, out, 1);
-AudioControlSGTL5000 audioShield;
+AudioConnection patchCord5(*drumkitSampler.getOutput(), 0, out, 0);
+AudioConnection patchCord6(*drumkitSampler.getOutput(), 0, out, 1);
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
 Encoder encoder(20, 21);
@@ -54,6 +54,7 @@ void setup()
 
 
   Serial.begin(9600);
+  delay(2000);
   AudioMemory(10);
 
   // Start SerialFlash
@@ -81,16 +82,16 @@ void setup()
   grid.registerHandler(&seqInput);
   grid.show();
 
-  sequencer.registerInstrument(&sampler);
+  sequencer.registerAudioEngine(&drumkitSampler);
 
 
   fiveWaySwitch.begin();
   menu.begin();
-  Serial.println("ready");
   fiveWaySwitch.registerEventHandler(&menu);
 
   menu.updatePageScreen();
 
+  Serial.println("Ready!");
 }
 
 

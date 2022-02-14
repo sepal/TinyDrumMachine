@@ -3,11 +3,10 @@
 
 #include <Arduino.h>
 #include "Note.h"
-#include "Instrument.h"
+#include "AudioEngine.h"
 
 #define PATTERN_LEN 16
-#define MAX_VOICES 4
-#define SEQUENCER_MAX_INSTRUMENTS 10
+#define MAX_VOICES 8
 
 /**
  * Defines a step sequencer which can play one instrument.
@@ -45,12 +44,12 @@ public:
     /**
      * Register an instrument to play.
      */
-    void registerInstrument(Instrument* instrument);
+    void registerAudioEngine(AudioEngine* engine);
 
     /**
      * Remove an instrument.
      */
-    void unregisterInstrument();
+    void unregisterAudioEngine();
 
 protected:
     const uint8_t step_len = PATTERN_LEN;
@@ -59,7 +58,7 @@ protected:
 
     Note *_stack[MAX_VOICES];
 
-    Instrument* instrument;
+    AudioEngine* engine;
 };
 
 #endif

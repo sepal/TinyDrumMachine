@@ -36,7 +36,6 @@ public:
 
     virtual void buttonDown(FiveWaySwitchButton button)
     {
-        Serial.println((int)button);
         switch (button)
         {
         case FiveWaySwitchButton::JOYSTICK_DIR_UP:
