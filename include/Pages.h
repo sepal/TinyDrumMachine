@@ -15,40 +15,4 @@ public:
 protected:
 };
 
-#include "SequenceControls.h"
-
-class SequencerPage : public Page
-{
-public:
-    SequencerPage(DisplaySSD1327_128x128_I2C *display, SequencerInput *seqInput)
-        : controls{
-              {
-                  new SequenceControlBPM(4, 21, display),
-                  new PositionControl(84, 21, display, seqInput),
-              },
-          }
-    {
-    }
-
-    virtual const char* getTitle()
-    {
-        return "Sequencer";
-    }
-
-    virtual Control* getControl(uint8_t x, uint8_t y)
-    {
-        return controls[y][x];
-    }
-
-    virtual uint8_t width() {
-        return 2;
-    };
-    virtual uint8_t height() {
-        return 1;
-    }
-
-protected:
-    Control *controls[1][2];
-};
-
 #endif

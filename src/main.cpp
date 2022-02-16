@@ -17,6 +17,7 @@
 #include "Stealth57.h"
 #include "Menu.h"
 #include "Pages.h"
+#include "SequencerPage.h"
 #include "ADSRPage.h"
 #include "Encoder.h"
 #include "EncoderHandler.h"
@@ -39,7 +40,8 @@ EncoderHandler* encoderHandler = 0;
 int32_t encoder_last_pos;
 
 Page* pages[1] = {
-  new ADSRPage(&display, &drumkitSampler),
+  new SequencerPage(&display, &seqInput),
+  // new ADSRPage(&display, &drumkitSampler),
 };
 Menu menu(&display, pages, 1);
 

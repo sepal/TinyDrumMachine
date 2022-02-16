@@ -4,7 +4,8 @@
 #include <Audio.h>
 #include "AudioConstants.h"
 #include "AudioEngine.h"
-#include "ADSRControl.h"
+#include "ADSRControlable.h"
+#include "ADSRCapable.h"
 
 #define DRUMKIT_MAX_BANKS 8
 
@@ -46,7 +47,7 @@ protected:
     float release;
 };
 
-class DrumkitSampleEngine: public AudioEngineADSR
+class DrumkitSampleEngine: public AudioEngine, public ADSRCapable
 {
 public:
     DrumkitSampleEngine();

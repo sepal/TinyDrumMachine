@@ -134,7 +134,7 @@ void ReleaseController::onEncoderChange(int increments)
 
 ADSRControlSelector::ADSRControlSelector(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display,
                                          AttackController *attack, DecayController *decay, SustainController *sustain, ReleaseController *release,
-                                         AudioEngineADSR *engine) : Control(xPos, yPos, display)
+                                         ADSRCapable *engine) : Control(xPos, yPos, display)
 {
     this->adsr[0] = attack;
     this->adsr[1] = decay;
