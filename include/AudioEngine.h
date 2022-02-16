@@ -2,6 +2,7 @@
 #define _AUDIO_ENGINE_H_
 
 #include "Audio.h"
+#include "ADSRControlable.h"
 
 /**
  * An audio engine is an object that play notes and output sound
@@ -25,6 +26,13 @@ public:
      */
     virtual void noteOff(uint8_t note) = 0;
 
+};
+
+class AudioEngineADSR: public AudioEngine
+{
+public:
+    virtual ADSRControlable* getADSRControlable(int8_t i) = 0;
+    virtual int8_t maxItems() = 0;
 };
 
 #endif

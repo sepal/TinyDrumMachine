@@ -18,6 +18,9 @@
 #include "Stealth57.h"
 #include "Menu.h"
 #include "Pages.h"
+#include "ADSRPage.h"
+#include "Encoder.h"
+#include "EncoderHandler.h"
 
 #define FLASH_CHIP_SELECT 6
 
@@ -32,11 +35,12 @@ AudioConnection patchCord5(*drumkitSampler.getOutput(), 0, out, 0);
 AudioConnection patchCord6(*drumkitSampler.getOutput(), 0, out, 1);
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
-Encoder encoder(20, 21);
 SequencerInput seqInput(&sequencer, &grid);
+EncoderHandler* encoderHandler = 0;
+int32_t encoder_last_pos;
 
 Page* pages[1] = {
-  new SequencerPage(&display, &seqInput),
+  new ADSRPage(&display, &drumkitSampler),
 };
 Menu menu(&display, pages, 1);
 

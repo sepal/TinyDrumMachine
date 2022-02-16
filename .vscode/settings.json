@@ -12,5 +12,6 @@
         "sequencereventhandler.h": "c",
         "*.tcc": "cpp",
         "map": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

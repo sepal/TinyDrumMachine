@@ -4,10 +4,11 @@
 #include <Audio.h>
 #include "AudioConstants.h"
 #include "AudioEngine.h"
+#include "ADSRControl.h"
 
 #define DRUMKIT_MAX_BANKS 8
 
-class DrumkitSampleBank
+class DrumkitSampleBank: public ADSRControlable
 {
 public:
     DrumkitSampleBank(const char* sampleName);
@@ -20,10 +21,16 @@ public:
     int note();
     bool isPlaying();
 
-    void attack(float milliseconds);
-    void decay(float milliseconds);
-    void sustain(float level);
-    void release(float milliseconds);
+    void setAttack(float milliseconds);
+    void setDecay(float milliseconds);
+    void setSustain(float level);
+    void setRelease(float milliseconds);
+
+
+    virtual float getAttack();
+    virtual float getDecay();
+    virtual float getSustain();
+    virtual float getRelease();
 protected:
     const char* sampleName;
     int velocityCurve = 1;
@@ -32,9 +39,14 @@ protected:
     AudioAmplifier* amp;
     AudioEffectEnvelope* env;
     AudioConnection* cords[2];
+
+    float attack;
+    float decay;
+    float sustain;
+    float release;
 };
 
-class DrumkitSampleEngine: public AudioEngine
+class DrumkitSampleEngine: public AudioEngineADSR
 {
 public:
     DrumkitSampleEngine();
@@ -42,7 +54,8 @@ public:
     virtual AudioStream* getOutput();
     virtual void noteOn(uint8_t note, uint8_t velocity);
     virtual void noteOff(uint8_t note);
-
+    virtual ADSRControlable* getADSRControlable(int8_t i);
+    virtual int8_t maxItems();
 
     DrumkitSampleBank* getDrumkitSampleBank(uint8_t i);
 

@@ -15,10 +15,10 @@ DrumkitSampleBank::DrumkitSampleBank(const char *sampleName)
     this->env->hold(0.0);
 
     this->amp->gain(1.0);
-    this->attack(0.0);
-    this->decay(0.0);
-    this->sustain(1.0);
-    this->release(10.0);
+    this->setAttack(0.0);
+    this->setDecay(0.0);
+    this->setSustain(1.0);
+    this->setRelease(10.0);
 }
 
 AudioStream *DrumkitSampleBank::getOutput()
@@ -38,24 +38,48 @@ void DrumkitSampleBank::noteOff()
     this->env->noteOff();
 }
 
-void DrumkitSampleBank::attack(float milliseconds)
+void DrumkitSampleBank::setAttack(float milliseconds)
 {
     this->env->attack(milliseconds);
+    this->attack = milliseconds;
 }
 
-void DrumkitSampleBank::decay(float milliseconds)
+void DrumkitSampleBank::setDecay(float milliseconds)
 {
     this->env->decay(milliseconds);
+    this->decay = milliseconds;
 }
 
-void DrumkitSampleBank::sustain(float level)
+void DrumkitSampleBank::setSustain(float level)
 {
     this->env->sustain(level);
+    this->sustain = level;
 }
 
-void DrumkitSampleBank::release(float milliseconds)
+void DrumkitSampleBank::setRelease(float milliseconds)
 {
     this->env->release(milliseconds);
+    this->release = milliseconds;
+}
+
+float DrumkitSampleBank::getAttack()
+{
+    return attack;
+}
+
+float DrumkitSampleBank::getDecay()
+{
+    return decay;
+}
+
+float DrumkitSampleBank::getSustain()
+{
+    return sustain;
+}
+
+float DrumkitSampleBank::getRelease()
+{
+    return release;
 }
 
 DrumkitSampleEngine::DrumkitSampleEngine()
@@ -108,6 +132,16 @@ void DrumkitSampleEngine::noteOff(uint8_t note)
 AudioStream *DrumkitSampleEngine::getOutput()
 {
     return this->output;
+}
+
+ADSRControlable* DrumkitSampleEngine::getADSRControlable(int8_t i)
+{
+    return this->getDrumkitSampleBank(i);
+}
+
+int8_t DrumkitSampleEngine::maxItems()
+{
+    return DRUMKIT_MAX_BANKS;
 }
 
 DrumkitSampleBank* DrumkitSampleEngine::getDrumkitSampleBank(uint8_t i)
