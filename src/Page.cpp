@@ -16,6 +16,18 @@ Page::Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySw
     this->pageLeft->setRightPage(this);
 }
 
+void Page::onSelect()
+{
+    const char* title = this->getTitle();
+    int x = 64 - sizeof(title)*5;
+    display->clear();
+    if (this->pageLeft != 0)
+        display->printFixed(4, 0, "<");
+    display->printFixed(x, 0, title);
+    if (this->pageRight != 0)
+        display->printFixed(114, 0, ">");
+}
+
 void Page::setLeftPage(Page *page)
 {
     this->pageLeft = page;

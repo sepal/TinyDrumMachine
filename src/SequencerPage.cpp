@@ -24,7 +24,7 @@ SequencerPage::SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* 
 
 const char *SequencerPage::getTitle()
 {
-    return "Sequencer";
+    return "SEQ";
 }
 
 Control *SequencerPage::getControl(uint8_t x, uint8_t y)

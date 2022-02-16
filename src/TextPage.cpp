@@ -66,8 +66,7 @@ void TextPage::selectControl()
 
 void TextPage::onSelect()
 {
-    display->clear();
-    display->printFixed(4, 0, this->getTitle());
+    Page::onSelect();
     for (int y = 0; y < this->height(); y++)
     {
         for (int x = 0; x < this->width(); x++)

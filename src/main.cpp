@@ -85,9 +85,9 @@ void setup()
 
 
   fiveWaySwitch.begin();
-  fiveWaySwitch.registerEventHandler(&adsrPage);
-  encoder.registerEventHandler(&adsrPage);
-  adsrPage.onSelect();
+  fiveWaySwitch.registerEventHandler(&sequencerPage);
+  encoder.registerEventHandler(&sequencerPage);
+  sequencerPage.onSelect();
 
 
   Serial.println("Ready!");
