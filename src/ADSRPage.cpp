@@ -2,7 +2,6 @@
 
 ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C *display, ADSRCapable *adsrEngine)
 {
-    ADSRControlable *controlable = adsrEngine->getADSRControlable(2);
     attack = new AttackController(4, 32, display);
     decay = new DecayController(4, 48, display);
     sustain = new SustainController(4, 64, display);
