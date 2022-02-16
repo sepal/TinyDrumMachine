@@ -45,12 +45,12 @@ public:
             }
             break;
         case FiveWaySwitchButton::JOYSTICK_DIR_RIGHT:
-            if (x < pages[currentPage]->width()) {
+            if (x < pages[currentPage]->width() - 1) {
                 x++;
             }
             break;
         case FiveWaySwitchButton::JOYSTICK_DIR_DOWN:
-            if (y < pages[currentPage]->height()) {
+            if (y < pages[currentPage]->height() - 1) {
                 y++;
             }
             break;
