@@ -7,7 +7,6 @@
 #include <SerialFlash.h>
 #include <lcdgfx.h>
 #include "Adafruit_NeoTrellis.h"
-#define ENCODER_DO_NOT_USE_INTERRUPTS
 #include <Encoder.h>
 
 #include "FiveWaySwitch.h"

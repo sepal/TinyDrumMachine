@@ -18,12 +18,13 @@ public:
         sustain = new SustainController(4, 48, display);
         release = new ReleaseController(4, 64, display);
 
+        Serial.println(adsrEngine->getADSRControlable(0)->getSustain());
+
         controls[0][0] = attack;
         controls[1][0] = decay;
         controls[2][0] = sustain;
         controls[3][0] = release;
         
-        Serial.println(controlable->getAttack());
         attack->setControlable(controlable);
         decay->setControlable(controlable);
         sustain->setControlable(controlable);

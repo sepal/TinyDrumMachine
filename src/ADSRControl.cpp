@@ -78,7 +78,7 @@ void SustainController::draw()
 {
 
     char s[7];
-    snprintf(s, 7, "%03f", (int)this->controlable->getSustain());
+    snprintf(s, 7, "%03f", this->controlable->getSustain());
     printFixed(0, 0, "Sus:");
     printFixed(50, 0, s);
 }
