@@ -1,6 +1,23 @@
 #include "ADSRPage.h"
 
-ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C *display, ADSRCapable *adsrEngine)
+ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine)
+    : TextPage(display, encoder, fiveWaySwitch)
+{
+    attack = new AttackController(4, 32, display);
+    decay = new DecayController(4, 48, display);
+    sustain = new SustainController(4, 64, display);
+    release = new ReleaseController(4, 80, display);
+    selector = new ADSRControlSelector(4, 16, display, attack, decay, sustain, release, adsrEngine);
+
+    controls[0][0] = selector;
+    controls[1][0] = attack;
+    controls[2][0] = decay;
+    controls[3][0] = sustain;
+    controls[4][0] = release;
+}
+
+ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, ADSRCapable *adsrEngine, Page *pageLeft)
+    : TextPage(display, encoder, fiveWaySwitch, pageLeft)
 {
     attack = new AttackController(4, 32, display);
     decay = new DecayController(4, 48, display);

@@ -39,7 +39,6 @@ void AttackController::onEncoderChange(int increments)
     }
 
     this->controlable->setAttack(attack);
-    this->draw();
 }
 
 DecayController::DecayController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
@@ -69,7 +68,7 @@ void DecayController::onEncoderChange(int increments)
     }
 
     this->controlable->setDecay(attack);
-    this->draw();
+    
 }
 
 SustainController::SustainController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
@@ -99,7 +98,7 @@ void SustainController::onEncoderChange(int increments)
     }
 
     this->controlable->setSustain(attack);
-    this->draw();
+    
 }
 
 ReleaseController::ReleaseController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
@@ -129,7 +128,7 @@ void ReleaseController::onEncoderChange(int increments)
     }
 
     this->controlable->setRelease(attack);
-    this->draw();
+    
 }
 
 ADSRControlSelector::ADSRControlSelector(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display,
@@ -176,7 +175,7 @@ void ADSRControlSelector::onEncoderChange(int increments)
     {
         adsr[i]->setControlable(controlable);
     }
-    this->draw();
+    
     for (int i=0; i<4; i++) {
         this->adsr[i]->draw();
     }

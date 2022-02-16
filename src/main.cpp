@@ -10,22 +10,22 @@
 #include <Encoder.h>
 
 #include "FiveWaySwitch.h"
+#include "EncoderInput.h"
 #include "Sequencer.h"
 #include "DrumkitSampleEngine.h"
 #include "Grid.h"
 #include "SequencerInput.h"
 #include "Stealth57.h"
-#include "Menu.h"
-#include "Pages.h"
 #include "SequencerPage.h"
 #include "ADSRPage.h"
-#include "Encoder.h"
-#include "EncoderHandler.h"
 
 #define FLASH_CHIP_SELECT 6
 
 DisplaySSD1327_128x128_I2C display(-1);
 AudioControlSGTL5000 audioShield;
+Grid grid;
+FiveWaySwitch fiveWaySwitch;
+EncoderInput encoder;
 
 Sequencer sequencer;
 DrumkitSampleEngine drumkitSampler;
@@ -33,17 +33,11 @@ DrumkitSampleEngine drumkitSampler;
 AudioOutputI2S out;
 AudioConnection patchCord5(*drumkitSampler.getOutput(), 0, out, 0);
 AudioConnection patchCord6(*drumkitSampler.getOutput(), 0, out, 1);
-Grid grid;
-FiveWaySwitch fiveWaySwitch;
 SequencerInput seqInput(&sequencer, &grid);
-EncoderHandler* encoderHandler = 0;
-int32_t encoder_last_pos;
 
-Page* pages[1] = {
-  new SequencerPage(&display, &seqInput),
-  // new ADSRPage(&display, &drumkitSampler),
-};
-Menu menu(&display, pages, 1);
+
+SequencerPage sequencerPage(&display, &encoder, &fiveWaySwitch, &seqInput);
+ADSRPage adsrPage(&display, &encoder, &fiveWaySwitch, &drumkitSampler, &sequencerPage);
 
 void ClockOut16PPQN(uint32_t *tick)
 {
@@ -91,10 +85,10 @@ void setup()
 
 
   fiveWaySwitch.begin();
-  menu.begin();
-  fiveWaySwitch.registerEventHandler(&menu);
+  fiveWaySwitch.registerEventHandler(&adsrPage);
+  encoder.registerEventHandler(&adsrPage);
+  adsrPage.onSelect();
 
-  menu.updatePageScreen();
 
   Serial.println("Ready!");
 }
@@ -105,5 +99,7 @@ void loop()
   grid.read();
   sequencer.update();
   fiveWaySwitch.update();
-  menu.update();
+  encoder.update();
+
+    
 }

@@ -1,7 +1,19 @@
 #include "SequencerPage.h"
 
-SequencerPage::SequencerPage(DisplaySSD1327_128x128_I2C *display, SequencerInput *seqInput)
-    : controls{
+SequencerPage::SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput)
+    : TextPage(display, encoder, fiveWaySwitch),
+     controls{
+          {
+              new SequenceControlBPM(4, 21, display),
+              new PositionControl(84, 21, display, seqInput),
+          },
+      }
+{
+}
+
+SequencerPage::SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput)
+    : TextPage(display, encoder, fiveWaySwitch, pageLeft),
+    controls{
           {
               new SequenceControlBPM(4, 21, display),
               new PositionControl(84, 21, display, seqInput),

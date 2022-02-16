@@ -4,13 +4,14 @@
 #include "SequenceControls.h"
 
 #include <Arduino.h>
-#include "Pages.h"
+#include "TextPage.h"
 #include "SequenceControls.h"
 
-class SequencerPage : public Page
+class SequencerPage : public TextPage
 {
 public:
-    SequencerPage(DisplaySSD1327_128x128_I2C *display, SequencerInput *seqInput);
+    SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput);
+    SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput);
 
     virtual const char* getTitle();
 

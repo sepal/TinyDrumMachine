@@ -2,14 +2,15 @@
 #define _ADSR_PAGE_H_
 
 #include <lcdgfx.h>
-#include "Pages.h"
+#include "TextPage.h"
 #include "AudioEngine.h"
 #include "ADSRControl.h"
 
-class ADSRPage : public Page
+class ADSRPage : public TextPage
 {
 public:
-    ADSRPage(DisplaySSD1327_128x128_I2C *display, ADSRCapable *adsrEngine);
+    ADSRPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine);
+    ADSRPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine, Page* pageLeft);
 
     virtual const char *getTitle();
     virtual Control *getControl(uint8_t x, uint8_t y);
