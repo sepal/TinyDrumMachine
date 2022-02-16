@@ -54,10 +54,9 @@ public:
     virtual AudioStream* getOutput();
     virtual void noteOn(uint8_t note, uint8_t velocity);
     virtual void noteOff(uint8_t note);
-    virtual ADSRControlable* getADSRControlable(int8_t i);
-    virtual int8_t maxItems();
-
-    DrumkitSampleBank* getDrumkitSampleBank(uint8_t i);
+    virtual ADSRControlable* getADSRControlable(uint8_t i);
+    virtual const char* getADSRControlableName(uint8_t i);
+    virtual uint8_t maxADSRControlables();
 
 protected:
     DrumkitSampleBank* units[DRUMKIT_MAX_BANKS];
@@ -71,6 +70,9 @@ protected:
         "01.RAW", "02.RAW", "03.RAW", "04.RAW", "05.RAW", "06.RAW", "07.RAW", "08.RAW"
     };
 
+    const char* adsrNames[4] = {
+        "Bank1", "Bank2", "Bank3", "Bank4"
+    };
 };
 
 #endif

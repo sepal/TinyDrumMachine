@@ -4,6 +4,7 @@
 #include "lcdgfx.h"
 #include "Control.h"
 #include "ADSRControlable.h"
+#include "AudioEngine.h"
 
 class ADSRController : public Control
 {
@@ -53,6 +54,22 @@ public:
 
     virtual void draw();
     virtual void onEncoderChange(int increments);
+};
+
+class ADSRControlSelector : public Control
+{
+public:
+    ADSRControlSelector(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display,
+                        AttackController *attack, DecayController *decay, SustainController *sustain, ReleaseController *release,
+                        AudioEngineADSR *engine);
+
+    virtual void draw();
+    virtual void onEncoderChange(int increments);
+
+protected:
+    ADSRController *adsr[4];
+    AudioEngineADSR *engine;
+    int i;
 };
 
 #endif

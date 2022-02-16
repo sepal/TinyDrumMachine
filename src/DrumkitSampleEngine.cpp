@@ -134,17 +134,17 @@ AudioStream *DrumkitSampleEngine::getOutput()
     return this->output;
 }
 
-ADSRControlable* DrumkitSampleEngine::getADSRControlable(int8_t i)
-{
-    return this->getDrumkitSampleBank(i);
-}
-
-int8_t DrumkitSampleEngine::maxItems()
-{
-    return DRUMKIT_MAX_BANKS;
-}
-
-DrumkitSampleBank* DrumkitSampleEngine::getDrumkitSampleBank(uint8_t i)
+ADSRControlable* DrumkitSampleEngine::getADSRControlable(uint8_t i)
 {
     return this->units[i];
+}
+
+const char* DrumkitSampleEngine::getADSRControlableName(uint8_t i)
+{
+    return this->adsrNames[i];
+}
+
+uint8_t DrumkitSampleEngine::maxADSRControlables()
+{
+    return 4;
 }

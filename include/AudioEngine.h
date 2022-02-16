@@ -12,9 +12,9 @@ class AudioEngine
 {
 public:
     /**
-     * The audio output object; 
+     * The audio output object;
      */
-    virtual AudioStream* getOutput() = 0;
+    virtual AudioStream *getOutput() = 0;
 
     /**
      * Play a note.
@@ -25,14 +25,14 @@ public:
      * Stop playing a note.
      */
     virtual void noteOff(uint8_t note) = 0;
-
 };
 
-class AudioEngineADSR: public AudioEngine
+class AudioEngineADSR : public AudioEngine
 {
 public:
-    virtual ADSRControlable* getADSRControlable(int8_t i) = 0;
-    virtual int8_t maxItems() = 0;
+    virtual ADSRControlable *getADSRControlable(uint8_t i) = 0;
+    virtual const char* getADSRControlableName(uint8_t i) = 0;
+    virtual uint8_t maxADSRControlables() = 0;
 };
 
 #endif

@@ -14,7 +14,8 @@ void ADSRController::setControlable(ADSRControlable *toControl)
 
 AttackController::AttackController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
     : ADSRController(xPos, yPos, display)
-{}
+{
+}
 
 void AttackController::draw()
 {
@@ -43,7 +44,8 @@ void AttackController::onEncoderChange(int increments)
 
 DecayController::DecayController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
     : ADSRController(xPos, yPos, display)
-{}
+{
+}
 
 void DecayController::draw()
 {
@@ -72,7 +74,8 @@ void DecayController::onEncoderChange(int increments)
 
 SustainController::SustainController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
     : ADSRController(xPos, yPos, display)
-{}
+{
+}
 
 void SustainController::draw()
 {
@@ -101,7 +104,8 @@ void SustainController::onEncoderChange(int increments)
 
 ReleaseController::ReleaseController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
     : ADSRController(xPos, yPos, display)
-{}
+{
+}
 
 void ReleaseController::draw()
 {
@@ -126,4 +130,54 @@ void ReleaseController::onEncoderChange(int increments)
 
     this->controlable->setRelease(attack);
     this->draw();
+}
+
+ADSRControlSelector::ADSRControlSelector(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display,
+                                         AttackController *attack, DecayController *decay, SustainController *sustain, ReleaseController *release,
+                                         AudioEngineADSR *engine) : Control(xPos, yPos, display)
+{
+    this->adsr[0] = attack;
+    this->adsr[1] = decay;
+    this->adsr[2] = sustain;
+    this->adsr[3] = release;
+    this->engine = engine;
+
+    this->w = 120;
+    this->h = 8;
+    i = 0;
+    ADSRControlable *controlable = this->engine->getADSRControlable(i);
+
+    for (int i = 0; i < 4; i++)
+    {
+        adsr[i]->setControlable(controlable);
+    }
+}
+
+void ADSRControlSelector::draw()
+{
+    printFixed(0, 0, "Env:");
+    printFixed(50, 0, this->engine->getADSRControlableName(i));
+}
+
+void ADSRControlSelector::onEncoderChange(int increments)
+{
+    i += increments;
+    if (i < 0)
+    {
+        i = 0;
+    }
+    else if (i > this->engine->maxADSRControlables())
+    {
+        i = this->engine->maxADSRControlables() - 1;
+    }
+    ADSRControlable *controlable = this->engine->getADSRControlable(i);
+
+    for (int i = 0; i < 4; i++)
+    {
+        adsr[i]->setControlable(controlable);
+    }
+    this->draw();
+    for (int i=0; i<4; i++) {
+        this->adsr[i]->draw();
+    }
 }
