@@ -3,14 +3,13 @@
 
 #include "Page.h"
 
-class TextPage: public Page
+class TextPage : public Page
 {
 public:
-    TextPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch);
-    TextPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft);
+    TextPage(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
+    TextPage(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
     void onEncoderChange(int offset);
-    void buttonDown(FiveWaySwitchButton button);
-    void buttonUp(FiveWaySwitchButton button);
+    void onNavigation(FiveWaySwitchButton button);
 
     void onSelect();
     void onBlur();
@@ -20,7 +19,7 @@ protected:
     uint8_t y = 0;
     Control *currentControl;
 
-    virtual Control* getControl(uint8_t x, uint8_t y) = 0;
+    virtual Control *getControl(uint8_t x, uint8_t y) = 0;
 
     virtual uint8_t width() = 0;
     virtual uint8_t height() = 0;

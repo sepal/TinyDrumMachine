@@ -15,7 +15,7 @@ void TextPage::onEncoderChange(int offset)
     getControl(x, y)->draw();
 }
 
-void TextPage::buttonDown(FiveWaySwitchButton button)
+void TextPage::onNavigation(FiveWaySwitchButton button)
 {
     switch (button)
     {
@@ -23,6 +23,11 @@ void TextPage::buttonDown(FiveWaySwitchButton button)
         if (y > 0)
         {
             y--;
+        }
+        else
+        {
+            this->enablePageSelection();
+            return;
         }
         break;
     case FiveWaySwitchButton::JOYSTICK_DIR_RIGHT:
@@ -50,8 +55,6 @@ void TextPage::buttonDown(FiveWaySwitchButton button)
     selectControl();
 }
 
-void TextPage::buttonUp(FiveWaySwitchButton button) {}
-
 void TextPage::selectControl()
 {
     if (currentControl)
@@ -72,12 +75,18 @@ void TextPage::onSelect()
         for (int x = 0; x < this->width(); x++)
         {
             Control *c = this->getControl(x, y);
+            c->blur();
             c->draw();
         }
     }
-    selectControl();
+    if (!pageSelection)
+    {
+        selectControl();
+    }
 }
 
 void TextPage::onBlur()
 {
+    this->currentControl->blur();
+    this->currentControl->draw();
 }

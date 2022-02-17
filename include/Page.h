@@ -11,31 +11,33 @@
 class Page : public EncoderHandler, public FiveWaySwitchEventHandler
 {
 public:
-    Page(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch);
-    Page(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft);
+    Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
+    Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
 
-    virtual const char* getTitle() = 0;
+    virtual const char *getTitle() = 0;
 
     virtual void onEncoderChange(int offset) = 0;
-    virtual void buttonDown(FiveWaySwitchButton button) = 0;
-    virtual void buttonUp(FiveWaySwitchButton button) = 0;
+    virtual void onNavigation(FiveWaySwitchButton button) = 0;
+
+    virtual void buttonDown(FiveWaySwitchButton button);
+    virtual void buttonUp(FiveWaySwitchButton button);
 
     virtual void onSelect() = 0;
     virtual void onBlur() = 0;
 
-
-    void setLeftPage(Page* page);
-    void setRightPage(Page* page);
+    void enablePageSelection();
+    void setLeftPage(Page *page);
+    void setRightPage(Page *page);
     void prevPage();
     void nextPage();
 
 protected:
-    Page* pageLeft = 0;
-    Page* pageRight = 0;
-    DisplaySSD1327_128x128_I2C* display;
-    EncoderInput* encoder;
-    FiveWaySwitch* fiveWaySwitch;
-
+    Page *pageLeft = 0;
+    Page *pageRight = 0;
+    DisplaySSD1327_128x128_I2C *display;
+    EncoderInput *encoder;
+    FiveWaySwitch *fiveWaySwitch;
+    bool pageSelection = false;
 };
 
 #endif
