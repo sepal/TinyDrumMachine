@@ -14,5 +14,5 @@
 	path = lib/lcdgfx
 	url = https://github.com/lexus2k/lcdgfx.git
 [submodule "lib/lib/Encoder"]
-	path = lib/lib/Encoder
+	path = lib/Encoder
 	url = https://github.com/PaulStoffregen/Encoder.git
