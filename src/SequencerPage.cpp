@@ -1,6 +1,6 @@
 #include "SequencerPage.h"
 
-SequencerPage::SequencerPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput)
+SequencerPage::SequencerPage(LCD_TYPE* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput)
     : TextPage(display, encoder, fiveWaySwitch),
      controls{
           {
@@ -11,7 +11,7 @@ SequencerPage::SequencerPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInpu
 {
 }
 
-SequencerPage::SequencerPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput)
+SequencerPage::SequencerPage(LCD_TYPE* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput)
     : TextPage(display, encoder, fiveWaySwitch, pageLeft),
     controls{
           {
@@ -42,7 +42,7 @@ uint8_t SequencerPage::height()
     return 1;
 }
 
-PositionControl::PositionControl(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display, SequencerInput *seqInput) : Control(xPos, yPos, display)
+PositionControl::PositionControl(int xPos, int yPos, LCD_TYPE *display, SequencerInput *seqInput) : Control(xPos, yPos, display)
 {
     this->seqInput = seqInput;
     this->w = 40;

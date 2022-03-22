@@ -3,13 +3,14 @@
 
 #include <lcdgfx.h>
 #include <uClock.h>
+#include "Config.h"
 #include "Control.h"
 #include "SequencerInput.h"
 
 class SequenceControlBPM : public Control
 {
 public:
-    SequenceControlBPM(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    SequenceControlBPM(int xPos, int yPos, LCD_TYPE *display);
 
     void draw();
     void onEncoderChange(int increments);
@@ -18,7 +19,7 @@ public:
 class PositionControl : public Control
 {
 public:
-    PositionControl(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display, SequencerInput *seqInput);
+    PositionControl(int xPos, int yPos, LCD_TYPE *display, SequencerInput *seqInput);
 
     void draw();
     void onEncoderChange(int increments);

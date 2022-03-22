@@ -1,7 +1,8 @@
 #ifndef _ADSR_CONTROL_H_
 #define _ADSR_CONTROL_H_
 
-#include "lcdgfx.h"
+#include <lcdgfx.h>
+#include "Config.h"
 #include "Control.h"
 #include "ADSRControlable.h"
 #include "ADSRCapable.h"
@@ -9,7 +10,7 @@
 class ADSRController : public Control
 {
 public:
-    ADSRController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    ADSRController(int xPos, int yPos, LCD_TYPE *display);
 
     virtual void draw() = 0;
     virtual void onEncoderChange(int increments) = 0;
@@ -23,7 +24,7 @@ protected:
 class AttackController : public ADSRController
 {
 public:
-    AttackController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    AttackController(int xPos, int yPos, LCD_TYPE *display);
 
     virtual void draw();
     virtual void onEncoderChange(int increments);
@@ -32,7 +33,7 @@ public:
 class DecayController : public ADSRController
 {
 public:
-    DecayController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    DecayController(int xPos, int yPos, LCD_TYPE *display);
 
     virtual void draw();
     virtual void onEncoderChange(int increments);
@@ -41,7 +42,7 @@ public:
 class SustainController : public ADSRController
 {
 public:
-    SustainController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    SustainController(int xPos, int yPos, LCD_TYPE *display);
 
     virtual void draw();
     virtual void onEncoderChange(int increments);
@@ -50,7 +51,7 @@ public:
 class ReleaseController : public ADSRController
 {
 public:
-    ReleaseController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display);
+    ReleaseController(int xPos, int yPos, LCD_TYPE *display);
 
     virtual void draw();
     virtual void onEncoderChange(int increments);
@@ -59,7 +60,7 @@ public:
 class ADSRControlSelector : public Control
 {
 public:
-    ADSRControlSelector(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display,
+    ADSRControlSelector(int xPos, int yPos, LCD_TYPE *display,
                         AttackController *attack, DecayController *decay, SustainController *sustain, ReleaseController *release,
                         ADSRCapable *engine);
 

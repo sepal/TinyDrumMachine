@@ -1,9 +1,11 @@
 #ifndef _CONTROL_H_
 #define _CONTROL_H_
 
+#include "Config.h"
+
 class Control {
 public:
-    Control(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI* display) {
+    Control(int xPos, int yPos, LCD_TYPE* display) {
         this->xPos = xPos;
         this->yPos = yPos;
         this->display = display;
@@ -42,7 +44,7 @@ protected:
     int h;
     bool selected;
 
-    DisplaySSD1351_128x128x16_SPI* display;
+    LCD_TYPE* display;
 };
 
 #endif

@@ -9,6 +9,7 @@
 #include "Adafruit_NeoTrellis.h"
 #include <Encoder.h>
 
+#include "Config.h"
 #include "FiveWaySwitch.h"
 #include "EncoderInput.h"
 #include "Sequencer.h"
@@ -22,7 +23,7 @@
 #define FLASH_CHIP_SELECT 6
 
 // The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
-DisplaySSD1351_128x128x16_SPI display(30,{-1, 26, 28, 0,-1,-1});
+LCD_TYPE display(PIN_LCD_RESET, {-1, PIN_LCD_CS, PIN_LCD_DC, 0, -1, -1});
 AudioControlSGTL5000 audioShield;
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
@@ -59,7 +60,7 @@ void ClockOut16PPQN(uint32_t *tick)
 
 void setup()
 {
-    pinMode(9, INPUT_PULLUP);
+    pinMode(PIN_BUTTON_MID, INPUT_PULLUP);
 
     Serial.begin(9600);
     delay(2000);
@@ -80,7 +81,7 @@ void setup()
 
     uClock.init();
     uClock.setClock16PPQNOutput(ClockOut16PPQN);
-    uClock.setOnClockStartOutput(onClockStart);  
+    uClock.setOnClockStartOutput(onClockStart);
     uClock.setOnClockStopOutput(onClockStop);
     uClock.setTempo(90);
 
@@ -98,7 +99,7 @@ void setup()
     encoder.registerEventHandler(&sequencerPage);
     sequencerPage.onSelect();
 
-    last_button = digitalRead(9);
+    last_button = digitalRead(PIN_BUTTON_MID);
 
     Serial.println("Ready!");
 }
@@ -110,12 +111,13 @@ void loop()
     fiveWaySwitch.update();
     encoder.update();
 
-    uint8_t play_button = digitalRead(9);
+    uint8_t play_button = digitalRead(PIN_BUTTON_MID);
     if (last_button != play_button)
     {
         if (play_button == LOW)
         {
-            if (playing == true) {
+            if (playing == true)
+            {
                 uClock.stop();
             }
             else

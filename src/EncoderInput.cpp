@@ -1,8 +1,9 @@
 #include "EncoderInput.h"
+#include "Config.h"
 
 EncoderInput::EncoderInput()
 {
-    encoder = new Encoder(15, 16);
+    encoder = new Encoder(PIN_ENCODER_A, PIN_ENCODER_B);
 }
 
 void EncoderInput::update()

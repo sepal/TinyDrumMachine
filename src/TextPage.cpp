@@ -1,10 +1,10 @@
 #include "TextPage.h"
 
-TextPage::TextPage(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch)
+TextPage::TextPage(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch)
     : Page(display, encoder, fiveWaySwitch)
 {
 }
-TextPage::TextPage(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft)
+TextPage::TextPage(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft)
     : Page(display, encoder, fiveWaySwitch, pageLeft)
 {
 }

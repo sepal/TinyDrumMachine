@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include <lcdgfx.h>
+#include "Config.h"
 #include "FiveWaySwitch.h"
 #include "EncoderInput.h"
 #include "EncoderHandler.h"
@@ -11,8 +12,8 @@
 class Page : public EncoderHandler, public FiveWaySwitchEventHandler
 {
 public:
-    Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
-    Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
+    Page(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
+    Page(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
 
     virtual const char *getTitle() = 0;
 
@@ -34,7 +35,7 @@ public:
 protected:
     Page *pageLeft = 0;
     Page *pageRight = 0;
-    DisplaySSD1351_128x128x16_SPI *display;
+    LCD_TYPE *display;
     EncoderInput *encoder;
     FiveWaySwitch *fiveWaySwitch;
     bool pageSelection = false;

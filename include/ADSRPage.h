@@ -2,6 +2,7 @@
 #define _ADSR_PAGE_H_
 
 #include <lcdgfx.h>
+#include "Config.h"
 #include "TextPage.h"
 #include "AudioEngine.h"
 #include "ADSRControl.h"
@@ -9,8 +10,8 @@
 class ADSRPage : public TextPage
 {
 public:
-    ADSRPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine);
-    ADSRPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine, Page* pageLeft);
+    ADSRPage(LCD_TYPE* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine);
+    ADSRPage(LCD_TYPE* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine, Page* pageLeft);
 
     virtual const char *getTitle();
     virtual Control *getControl(uint8_t x, uint8_t y);

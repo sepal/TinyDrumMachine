@@ -1,13 +1,14 @@
 #ifndef _TEXT_PAGE_H_
 #define _TEXT_PAGE_H_
 
+#include "Config.h"
 #include "Page.h"
 
 class TextPage : public Page
 {
 public:
-    TextPage(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
-    TextPage(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
+    TextPage(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
+    TextPage(LCD_TYPE *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
     void onEncoderChange(int offset);
     void onNavigation(FiveWaySwitchButton button);
 
