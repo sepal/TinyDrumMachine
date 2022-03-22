@@ -1,5 +1,5 @@
-#ifndef _PIN_CONFIG_H_
-#define _PIN_CONFIG_H_
+#ifndef _CONFIG_H_
+#define _CONFIG_H_
 
 
 // Display settings.
@@ -28,5 +28,6 @@
 // Audio board pins & settings.
 #define PIN_AUDIO_MEM 6
 #define PIN_AUDIO_SD 10
+
 
 #endif
