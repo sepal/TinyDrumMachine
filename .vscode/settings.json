@@ -13,5 +13,8 @@
         "*.tcc": "cpp",
         "map": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "cSpell.ignoreWords": [
+        "ADSR"
+    ]
 }

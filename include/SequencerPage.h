@@ -10,8 +10,8 @@
 class SequencerPage : public TextPage
 {
 public:
-    SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput);
-    SequencerPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput);
+    SequencerPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, SequencerInput *seqInput);
+    SequencerPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, Page* pageLeft, SequencerInput *seqInput);
 
     virtual const char* getTitle();
 

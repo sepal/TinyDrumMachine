@@ -11,8 +11,8 @@
 class Page : public EncoderHandler, public FiveWaySwitchEventHandler
 {
 public:
-    Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
-    Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
+    Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch);
+    Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft);
 
     virtual const char *getTitle() = 0;
 
@@ -34,7 +34,7 @@ public:
 protected:
     Page *pageLeft = 0;
     Page *pageRight = 0;
-    DisplaySSD1327_128x128_I2C *display;
+    DisplaySSD1351_128x128x16_SPI *display;
     EncoderInput *encoder;
     FiveWaySwitch *fiveWaySwitch;
     bool pageSelection = false;

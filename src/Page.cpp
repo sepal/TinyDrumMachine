@@ -1,13 +1,13 @@
 #include "Page.h"
 
-Page::Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch)
+Page::Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch)
 {
     this->display = display;
     this->encoder = encoder;
     this->fiveWaySwitch = fiveWaySwitch;
 }
 
-Page::Page(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft)
+Page::Page(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, Page *pageLeft)
 {
     this->display = display;
     this->encoder = encoder;

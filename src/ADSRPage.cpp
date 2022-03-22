@@ -1,6 +1,6 @@
 #include "ADSRPage.h"
 
-ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine)
+ADSRPage::ADSRPage(DisplaySSD1351_128x128x16_SPI* display, EncoderInput* encoder, FiveWaySwitch* fiveWaySwitch, ADSRCapable *adsrEngine)
     : TextPage(display, encoder, fiveWaySwitch)
 {
     attack = new AttackController(4, 32, display);
@@ -16,7 +16,7 @@ ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C* display, EncoderInput* encoder, F
     controls[4][0] = release;
 }
 
-ADSRPage::ADSRPage(DisplaySSD1327_128x128_I2C *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, ADSRCapable *adsrEngine, Page *pageLeft)
+ADSRPage::ADSRPage(DisplaySSD1351_128x128x16_SPI *display, EncoderInput *encoder, FiveWaySwitch *fiveWaySwitch, ADSRCapable *adsrEngine, Page *pageLeft)
     : TextPage(display, encoder, fiveWaySwitch, pageLeft)
 {
     attack = new AttackController(4, 32, display);

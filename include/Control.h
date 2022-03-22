@@ -3,7 +3,7 @@
 
 class Control {
 public:
-    Control(int xPos, int yPos, DisplaySSD1327_128x128_I2C* display) {
+    Control(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI* display) {
         this->xPos = xPos;
         this->yPos = yPos;
         this->display = display;
@@ -42,7 +42,7 @@ protected:
     int h;
     bool selected;
 
-    DisplaySSD1327_128x128_I2C* display;
+    DisplaySSD1351_128x128x16_SPI* display;
 };
 
 #endif

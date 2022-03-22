@@ -2,7 +2,7 @@
 
 EncoderInput::EncoderInput()
 {
-    encoder = new Encoder(20, 21);
+    encoder = new Encoder(15, 16);
 }
 
 void EncoderInput::update()

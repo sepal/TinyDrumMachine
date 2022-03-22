@@ -1,6 +1,6 @@
 #include "ADSRControl.h"
 
-ADSRController::ADSRController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
+ADSRController::ADSRController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display)
     : Control(xPos, yPos, display)
 {
     this->w = 120;
@@ -12,7 +12,7 @@ void ADSRController::setControlable(ADSRControlable *toControl)
     this->controlable = toControl;
 }
 
-AttackController::AttackController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
+AttackController::AttackController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display)
     : ADSRController(xPos, yPos, display)
 {
 }
@@ -41,7 +41,7 @@ void AttackController::onEncoderChange(int increments)
     this->controlable->setAttack(attack);
 }
 
-DecayController::DecayController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
+DecayController::DecayController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display)
     : ADSRController(xPos, yPos, display)
 {
 }
@@ -71,7 +71,7 @@ void DecayController::onEncoderChange(int increments)
     
 }
 
-SustainController::SustainController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
+SustainController::SustainController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display)
     : ADSRController(xPos, yPos, display)
 {
 }
@@ -101,7 +101,7 @@ void SustainController::onEncoderChange(int increments)
     
 }
 
-ReleaseController::ReleaseController(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display)
+ReleaseController::ReleaseController(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display)
     : ADSRController(xPos, yPos, display)
 {
 }
@@ -131,7 +131,7 @@ void ReleaseController::onEncoderChange(int increments)
     
 }
 
-ADSRControlSelector::ADSRControlSelector(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display,
+ADSRControlSelector::ADSRControlSelector(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display,
                                          AttackController *attack, DecayController *decay, SustainController *sustain, ReleaseController *release,
                                          ADSRCapable *engine) : Control(xPos, yPos, display)
 {

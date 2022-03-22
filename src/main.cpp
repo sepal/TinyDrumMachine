@@ -21,7 +21,8 @@
 
 #define FLASH_CHIP_SELECT 6
 
-DisplaySSD1327_128x128_I2C display(-1);
+// The parameters are  RST pin, BUS number, CS pin, DC pin, FREQ (0 means default), CLK pin, MOSI pin
+DisplaySSD1351_128x128x16_SPI display(30,{-1, 26, 28, 0,-1,-1});
 AudioControlSGTL5000 audioShield;
 Grid grid;
 FiveWaySwitch fiveWaySwitch;
@@ -58,12 +59,7 @@ void ClockOut16PPQN(uint32_t *tick)
 
 void setup()
 {
-    // Audio shield has SCK on pin 14
-    SPI.setSCK(14);
-    // Audio shield has MOSI on pin 7
-    SPI.setMOSI(7);
-
-    pinMode(16, INPUT_PULLUP);
+    pinMode(9, INPUT_PULLUP);
 
     Serial.begin(9600);
     delay(2000);
@@ -102,7 +98,7 @@ void setup()
     encoder.registerEventHandler(&sequencerPage);
     sequencerPage.onSelect();
 
-    last_button = digitalRead(16);
+    last_button = digitalRead(9);
 
     Serial.println("Ready!");
 }
@@ -114,7 +110,7 @@ void loop()
     fiveWaySwitch.update();
     encoder.update();
 
-    uint8_t play_button = digitalRead(16);
+    uint8_t play_button = digitalRead(9);
     if (last_button != play_button)
     {
         if (play_button == LOW)

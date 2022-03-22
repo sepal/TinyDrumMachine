@@ -1,6 +1,6 @@
 #include "SequenceControls.h"
 
-SequenceControlBPM::SequenceControlBPM(int xPos, int yPos, DisplaySSD1327_128x128_I2C *display) : Control(xPos, yPos, display)
+SequenceControlBPM::SequenceControlBPM(int xPos, int yPos, DisplaySSD1351_128x128x16_SPI *display) : Control(xPos, yPos, display)
 {
     this->w = 40;
     this->h = 18;
